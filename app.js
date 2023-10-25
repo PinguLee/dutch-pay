@@ -14,22 +14,28 @@ const server = http.createServer((req, res) => {
     let filePath = '';
     let contentType = contentTypes.html;
 
-    if (req.url === '/') {
-      filePath = 'index.html';
-    } else if (req.url === '/dutchPay') {
-      filePath = './static/dutchPay.html';
-    } else if (req.url === '/static/css/indexStyle.css') {
-      filePath = './static/css/indexStyle.css';
-      contentType = contentTypes.css;
-    } else if (req.url === '/static/css/resultStyle.css') {
-      filePath = './static/css/resultStyle.css';
-      contentType = contentTypes.css;
-    } else if (req.url === '/static/js/dutch-pay.js') {
-      filePath = './static/js/dutch-pay.js';
-      contentType = contentTypes.js;
-    } else {
-      res.writeHead(404, { 'Content-Type': contentTypes.plain });
-      return res.end('Not Found');
+    switch (req.url) {
+      case '/':
+        filePath = 'index.html';
+        break;
+      case '/dutchPay':
+        filePath = './static/dutchPay.html';
+        break;
+      case '/static/css/indexStyle.css':
+        filePath = './static/css/indexStyle.css';
+        contentType = contentTypes.css;
+        break;
+      case '/static/css/resultStyle.css':
+        filePath = './static/css/resultStyle.css';
+        contentType = contentTypes.css;
+        break;
+      case '/static/js/dutch-pay.js':
+        filePath = './static/js/dutch-pay.js';
+        contentType = contentTypes.js;
+        break;
+      default:
+        res.writeHead(404, { 'Content-Type': contentTypes.plain });
+        return res.end('Not Found');
     }
 
     fs.readFile(filePath, 'utf8', (err, data) => {
